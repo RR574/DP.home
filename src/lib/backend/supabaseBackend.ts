@@ -271,8 +271,9 @@ subscribe(coll, onChange) {
       return out;
     },
 
-    async uploadFile(blob, ext) {
-      const path = `${Date.now().toString(36)}${Math.random().toString(36).slice(2, 8)}.${ext}`;
+async uploadFile(blob, ext, requestedPath) {
+  const path = requestedPath ?? `${Date.now().toString(36)}${Math.random().toString(36).slice(2, 8)}.${ext}`;
+
       const { error } = await sb.storage.from(BUCKET)
         // 경로가 업로드마다 고유 — 기본 1시간 대신 길게 캐시 (firebaseBackend와 동일 정책)
         .upload(path, blob, {
