@@ -15,7 +15,7 @@ import { KInput, KSelect, KRadio, KCheck, KDate } from '@/components/ui/Kit';
 import { RichEditor } from '@/components/ui/RichEditor';
 import { DragList } from '@/components/ui/DragList';
 import { CropEditor, CropValue } from '@/components/ui/CropEditor';
-import { putBlob, useBlobUrl } from '@/lib/blobStore';
+import { putBlob, putGalleryThumbnail, useBlobUrl } from '@/lib/blobStore';
 import { useToast } from '@/components/ui/Toast';
 import { EditableDesc, PageTitle } from '@/components/ui/PageText';
 
