@@ -125,7 +125,11 @@ export function BackupForm({ initial }: { initial: BackupPost | null }) {
     if (!title.trim()) { toast('제목을 입력해 주세요'); return; }
     // 이미지 실저장 (IndexedDB) — 기존 ref는 유지, 새 파일만 저장
     const imageIds = await Promise.all(files.map(f => (f.file ? putBlob(f.file) : Promise.resolve(f.ref!))));
-    if (isNew) {
+
+      const firstFile = files[0];
+const thumbImage = firstFile?.file
+  ? await putGalleryThumbnail(firstFile.file, imageIds[0]) : initial?.thumbImage;
+          if (isNew) {
       const p: BackupPost = {
         id: newId(), title: title.trim(), type,
         images: imageIds, phList: files.length ? [] : ['cool'],
