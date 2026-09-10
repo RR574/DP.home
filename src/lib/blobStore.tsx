@@ -22,7 +22,52 @@ function extOf(blob: Blob): string {
   if (t.startsWith('text/')) return 'txt';
   return 'bin';
 }
+/** 그림 원본 → 갤러리용 WebP 썸네일 */
+export async function makeWebpThumbnail(
+  blob: Blob,
+  maxSide = 1200,
+  quality = 0.82,
+): Promise<Blob | null> {
+  if (!blob.type.startsWith('image/')) return null;
 
+  if (blob.type === 'image/gif' || blob.type === 'image/svg+xml') {
+    return null;
+  }
+
+  const bitmap = await createImageBitmap(blob);
+
+  try {
+    const scale = Math.min(
+      1,
+      maxSide / Math.max(bitmap.width, bitmap.height),
+    );
+
+    const width = Math.max(1, Math.round(bitmap.width * scale));
+    const height = Math.max(1, Math.round(bitmap.height * scale));
+
+    const canvas = document.createElement('canvas');
+    canvas.width = width;
+    canvas.height = height;
+
+    const ctx = canvas.getContext('2d');
+    if (!ctx) throw new Error('썸네일 생성에 실패했습니다.');
+
+    ctx.drawImage(bitmap, 0, 0, width, height);
+
+    return await new Promise<Blob>((resolve, reject) => {
+      canvas.toBlob(
+        result => {
+          if (result) resolve(result);
+          else reject(new Error('WebP 변환에 실패했습니다.'));
+        },
+        'image/webp',
+        quality,
+      );
+    });
+  } finally {
+    bitmap.close();
+  }
+}
 function openDb(): Promise<IDBDatabase> {
   return new Promise((resolve, reject) => {
     const req = indexedDB.open(DB_NAME, 1);
