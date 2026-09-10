@@ -92,8 +92,7 @@ function BackupPageInner() {
                 onClick={() => { if (!folded && !editOn) router.push(`/gallery/${p.id}`); }}>
                 <div className={`thumb ${folded ? 'veil' : ''}`}>
                   <div style={{ position: 'absolute', inset: 0 }}>
-                    <CroppedBlobImg fileRef={p.images[0]} crop={p.thumbCrop} ph={p.phList[0] ?? 'cool'} />
-                  </div>
+                    <CroppedBlobImg fileRef={p.thumbImage ?? p.images[0]} crop={p.thumbCrop} ph={p.phList[0] ?? 'cool'} />
                   {!folded && (
                     <span className="typ" style={boardBadgeStyle(typeBadge(p.type))}>
                       {typeBadge(p.type)?.label}
