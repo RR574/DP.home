@@ -133,6 +133,7 @@ const thumbImage = firstFile?.file
       const p: BackupPost = {
         id: newId(), title: title.trim(), type,
         images: imageIds, phList: files.length ? [] : ['cool'],
+        thumbImage,
         thumbCrop: files[0]?.crop, // 대표 이미지 크롭 (6.1)
         desc, category, tags: parseTags(tagsText), madeDate: madeDate || undefined,
         date: new Date().toISOString(), author: user.nickname, authorId: user.id,
