@@ -147,6 +147,7 @@ const thumbImage = firstFile?.file
       setPosts(posts.map(x => x.id === initial.id ? {
         ...x, title: title.trim(), type,
         images: imageIds, phList: files.length ? [] : x.phList,
+        thumbImage,
         thumbCrop: files[0]?.crop,
         desc, category, tags: parseTags(tagsText), madeDate: madeDate || undefined, visibility,
         fold: foldType === 'none' ? null : { type: foldType, label: foldType === 'custom' ? foldLabel : undefined },
