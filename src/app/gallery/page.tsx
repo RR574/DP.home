@@ -123,7 +123,8 @@ function BackupPageInner() {
       {/* 게시물이 없으면 컨테이너 자체를 숨김 — 빈 패널이 안내문 위에 카드처럼 남던 버그 (v1.9 사용자 발견) */}
       <div className="panel flush" style={{ display: view === 'list' && visible.length > 0 ? undefined : 'none' }}>
           {paged.map(p => (
-         <div className="th" style={{ position: 'relative' }}><CroppedBlobImg fileRef={p.thumbImage ?? p.images[0]} crop={p.thumbCrop} ph={p.phList[0] ?? 'cool'} /></div>
+      <div key={p.id} className="list-item" onClick={() => router.push(`/gallery/${p.id}`)}>  
+      <div className="th" style={{ position: 'relative' }}><CroppedBlobImg fileRef={p.thumbImage ?? p.images[0]} crop={p.thumbCrop} ph={p.phList[0] ?? 'cool'} /></div>
     
               <div style={{ flex: 1, minWidth: 0 }}>
                 <b>
