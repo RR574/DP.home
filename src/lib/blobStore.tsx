@@ -68,6 +68,39 @@ export async function makeWebpThumbnail(
     bitmap.close();
   }
 }
+
+/** 원본 이미지에 대응하는 WebP 썸네일을 저장 */
+export async function putGalleryThumbnail(
+  original: Blob,
+  originalRef: string,
+): Promise<string | undefined> {
+  try {
+    const thumb = await makeWebpThumbnail(original);
+    if (!thumb) return undefined;
+
+    const be = isServerMode() ? backend() : null;
+
+    // 로컬 모드에서는 IndexedDB에 저장
+    if (!be) return putBlob(thumb);
+
+    // 원본 파일명과 짝이 되게 저장
+    const originalName = decodeURIComponent(
+      originalRef.split('?')[0].split('/').pop() ?? '',
+    );
+    const base = originalName.replace(/\.[^.]+$/, '')
+      || `${Date.now().toString(36)}${Math.random().toString(36).slice(2, 8)}`;
+
+    return await be.uploadFile(
+      thumb,
+      'webp',
+      `thumb-${base}.webp`,
+    );
+  } catch (e) {
+    console.warn('썸네일 생성/업로드 실패:', e);
+    return undefined;
+  }
+}
+
 function openDb(): Promise<IDBDatabase> {
   return new Promise((resolve, reject) => {
     const req = indexedDB.open(DB_NAME, 1);
