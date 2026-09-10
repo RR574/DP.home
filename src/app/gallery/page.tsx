@@ -93,7 +93,8 @@ function BackupPageInner() {
                 <div className={`thumb ${folded ? 'veil' : ''}`}>
                   <div style={{ position: 'absolute', inset: 0 }}>
                     <CroppedBlobImg fileRef={p.thumbImage ?? p.images[0]} crop={p.thumbCrop} ph={p.phList[0] ?? 'cool'} />
-                  {!folded && (
+                 </div>
+                    {!folded && (
                     <span className="typ" style={boardBadgeStyle(typeBadge(p.type))}>
                       {typeBadge(p.type)?.label}
                     </span>
